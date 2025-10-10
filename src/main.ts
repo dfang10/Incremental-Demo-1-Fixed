@@ -14,10 +14,22 @@ document.body.style.textAlign = "center";
 document.body.style.marginTop = "0px";
 document.body.appendChild(potato);
 
+// Display amount of fries
+const counterElement = document.createElement("p");
+counterElement.id = "click-counter";
+counterElement.textContent = `Fries 🍟: ${counter}`;
+counterElement.style.fontSize = "24px";
+counterElement.style.position = "absolute";
+counterElement.style.fontFamily = "cursive";
+counterElement.style.marginTop = "200px";
+
+document.body.appendChild(counterElement);
+
 // When potato button clicked
 potato.addEventListener("click", () => {
   // Update click count
   counter++;
+  counterElement.textContent = `Fries 🍟: ${counter}`;
 
   // Play animation
   potato.style.transform = "scale(0.8)";
