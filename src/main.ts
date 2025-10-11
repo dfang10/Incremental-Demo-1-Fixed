@@ -25,6 +25,12 @@ counterElement.style.marginTop = "200px";
 
 document.body.appendChild(counterElement);
 
+// setInterval growth
+setInterval(() => {
+  counter++;
+  counterElement.textContent = `Fries 🍟: ${counter}`;
+}, 1000);
+
 // When potato button clicked
 potato.addEventListener("click", () => {
   // Update click count
