@@ -108,7 +108,7 @@ function gameLoop(currentTime: number) {
   lastTime = currentTime;
   requestAnimationFrame(gameLoop);
 }
-requestAnimationFrame(gameLoop); 
+requestAnimationFrame(gameLoop);
 
 // When potato button clicked
 potato.addEventListener("click", () => {
@@ -116,7 +116,6 @@ potato.addEventListener("click", () => {
   counter++;
   counterElement.textContent = `Fries 🍟: ${counter}`;
   updateButtons();
-
 
   // Play animation
   potato.style.transform = "scale(0.8)";
