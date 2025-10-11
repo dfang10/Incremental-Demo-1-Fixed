@@ -26,10 +26,24 @@ counterElement.style.marginTop = "200px";
 document.body.appendChild(counterElement);
 
 // setInterval growth
-setInterval(() => {
-  counter++;
-  counterElement.textContent = `Fries 🍟: ${counter}`;
-}, 1000);
+//setInterval(() => {
+//  counter++;
+//  counterElement.textContent = `Fries 🍟: ${counter}`;
+//}, 1000);
+
+// Continuous growth (used brace) requestAnimationFrame growth
+let lastTime = performance.now();
+function gameLoop(currentTime: number) {
+  const deltaSec = (currentTime - lastTime) / 1000; // seconds passed
+  //if (clickerCount > 0) {
+  counter += 1 * deltaSec; // fractional growth
+  counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`;
+
+  //}
+  lastTime = currentTime;
+  requestAnimationFrame(gameLoop);
+}
+requestAnimationFrame(gameLoop); // Start the loop!
 
 // When potato button clicked
 potato.addEventListener("click", () => {
