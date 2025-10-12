@@ -1,8 +1,13 @@
 import "./style.css";
 
 let counter: number = 0; // Amount of potatos
-let costClicker: number = 10; // Base price for an auto clicker
-let clickerCount: number = 0; // Amount of auto clickers
+let costUp1: number = 10; // Base price for an auto clicker
+let costUp2: number = 100;
+let upgrade1: number = 0;
+let upgrade1Amt: number = 0;
+let upgrade2: number = 0;
+let upgrade2Amt: number = 0;
+//let upgrade3: number = 0;
 
 // Potato button
 const potato = document.createElement("div");
@@ -17,30 +22,30 @@ document.body.style.marginTop = "0px";
 document.body.appendChild(potato);
 
 // clicker button
-const clicker = document.createElement("button");
-clicker.className = "clicker";
-clicker.style.position = "absolute";
-clicker.style.cursor = "pointer";
-clicker.style.fontSize = "24px";
-clicker.textContent = `Buy auto clicker: ${costClicker}🍟`;
+const up1 = document.createElement("button");
+up1.className = "clicker";
+up1.style.position = "absolute";
+up1.style.cursor = "pointer";
+up1.style.fontSize = "24px";
+up1.textContent = `Buy harvester: -${costUp1}🍟: +0.1🍟/sec`;
 
-clicker.style.textAlign = "center";
-clicker.style.marginTop = "275px";
-clicker.style.fontFamily = "cursive";
-document.body.appendChild(clicker);
+up1.style.textAlign = "center";
+up1.style.marginTop = "275px";
+up1.style.fontFamily = "cursive";
+document.body.appendChild(up1);
 
 // Buy 2 clicker button
-const clicker2 = document.createElement("button");
-clicker2.className = "clicker2";
-clicker2.style.position = "absolute";
-clicker2.style.cursor = "pointer";
-clicker2.style.fontSize = "24px";
-clicker2.textContent = `Buy 2 auto clickers: ${costClicker * 2}🍟`;
+const up2 = document.createElement("button");
+up2.className = "clicker2";
+up2.style.position = "absolute";
+up2.style.cursor = "pointer";
+up2.style.fontSize = "24px";
+up2.textContent = `Buy sprinkler: -${costUp2}🍟: +2.0🍟/sec`;
 
-clicker2.style.textAlign = "center";
-clicker2.style.marginTop = "400px";
-clicker2.style.fontFamily = "cursive";
-document.body.appendChild(clicker2);
+up2.style.textAlign = "center";
+up2.style.marginTop = "400px";
+up2.style.fontFamily = "cursive";
+document.body.appendChild(up2);
 
 // Display amount of fries
 const counterElement = document.createElement("p");
@@ -53,41 +58,64 @@ counterElement.style.marginTop = "200px";
 
 document.body.appendChild(counterElement);
 
+// Display amount of harvesters
+const clickerAmt = document.createElement("p");
+clickerAmt.id = "clicker-count";
+clickerAmt.textContent = `Harvesters: ${upgrade1}`;
+clickerAmt.style.fontSize = "24px";
+clickerAmt.style.position = "absolute";
+clickerAmt.style.fontFamily = "cursive";
+clickerAmt.style.marginTop = "-500px";
+
+document.body.appendChild(clickerAmt);
+
+const sprinklerAmt = document.createElement("p");
+sprinklerAmt.id = "clicker-count";
+sprinklerAmt.textContent = `Sprinklers: ${upgrade2}`;
+sprinklerAmt.style.fontSize = "24px";
+sprinklerAmt.style.position = "absolute";
+sprinklerAmt.style.fontFamily = "cursive";
+sprinklerAmt.style.marginTop = "-400px";
+
+document.body.appendChild(sprinklerAmt);
 updateButtons();
 
 // Function for buying auto clickers
 function buyClick() {
-  if (counter >= costClicker) {
-    counter -= costClicker;
-    costClicker++;
-    clickerCount++;
-    clicker.textContent = `Buy auto clicker: ${costClicker}🍟`;
-    clicker2.textContent = `Buy auto clicker: ${costClicker * 2}🍟`;
+  if (counter >= costUp1) {
+    counter -= costUp1;
+    costUp1++;
+    upgrade1 += 0.1;
+    upgrade1Amt++;
+    up1.textContent = `Buy harvester: -${costUp1}🍟: +0.1🍟/sec`;
+    up2.textContent = `Buy sprinkler: -${costUp2}🍟: +2.0🍟/sec`;
     updateButtons();
-    console.log(clickerCount);
-  } else if (counter < costClicker) {
+    clickerAmt.textContent = `Harvesters: ${upgrade1Amt}`;
+    sprinklerAmt.textContent = `Sprinklers: ${upgrade2Amt}`;
+  } else if (counter < costUp1) {
     updateButtons();
   }
 }
 
 function buyClick2() {
-  if (counter >= (costClicker * 2)) {
-    counter -= costClicker * 2;
-    costClicker += 2;
-    clickerCount += 2;
-    clicker.textContent = `Buy auto clicker: ${costClicker}🍟`;
-    clicker2.textContent = `Buy auto clicker: ${costClicker * 2}🍟`;
+  if (counter >= costUp2) {
+    counter -= costUp2;
+    costUp2 += 10;
+    upgrade2 += 2;
+    upgrade2Amt++;
+    up1.textContent = `Buy harvester: -${costUp1}🍟: +0.1🍟/sec`;
+    up2.textContent = `Buy sprinkler: -${costUp2}🍟: +2.0🍟/sec`;
     updateButtons();
-    console.log(clickerCount);
-  } else if (counter < (costClicker * 2)) {
+    sprinklerAmt.textContent = `Sprinklers: ${upgrade2Amt}`;
+  } else if (counter < costUp2) {
     updateButtons();
   }
 }
 
 // Disable button when not enough
 function updateButtons() {
-  clicker.disabled = counter < costClicker;
-  clicker2.disabled = counter < (costClicker * 2);
+  up1.disabled = counter < costUp1;
+  up2.disabled = counter < costUp2;
 }
 
 // setInterval growth
@@ -100,8 +128,13 @@ function updateButtons() {
 let lastTime = performance.now();
 function gameLoop(currentTime: number) {
   const deltaSec = (currentTime - lastTime) / 1000; // seconds passed
-  if (clickerCount > 0) {
-    counter += clickerCount * deltaSec; // fractional growth
+  if (upgrade1 > 0) {
+    counter += upgrade1 * deltaSec; // fractional growth
+    counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`;
+    updateButtons();
+  }
+  if (upgrade2 > 0) {
+    counter += upgrade2 * deltaSec;
     counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`;
     updateButtons();
   }
@@ -130,22 +163,22 @@ potato.addEventListener("click", () => {
 });
 
 // When purchase auto clicker button is clicked
-clicker.addEventListener("click", () => {
+up1.addEventListener("click", () => {
   buyClick();
 
   // Animation
-  clicker.style.transform = "scale(0.8)";
+  up1.style.transform = "scale(0.8)";
   setTimeout(() => {
-    clicker.style.transform = "scale(1)";
+    up1.style.transform = "scale(1)";
   }, 100);
 });
-clicker2.addEventListener("click", () => {
+up2.addEventListener("click", () => {
   buyClick2();
 
   // Animation
-  clicker2.style.transform = "scale(0.8)";
+  up2.style.transform = "scale(0.8)";
   setTimeout(() => {
-    clicker2.style.transform = "scale(1)";
+    up2.style.transform = "scale(1)";
   }, 100);
 });
 
