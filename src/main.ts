@@ -1,16 +1,16 @@
 import "./style.css";
 
 let counter: number = 0; // Amount of potatos
-let costUp1: number = 10; // Base price for an auto clicker
-let costUp2: number = 100;
-let costUp3: number = 1000;
-let upgrade1: number = 0;
-let upgrade1Amt: number = 0;
-let upgrade2: number = 0;
-let upgrade2Amt: number = 0;
-let upgrade3: number = 0;
-let upgrade3Amt: number = 0;
-let growthRate: number = 0;
+let costUp1: number = 10; // Base price for a harvester
+let costUp2: number = 100; // Base price for a sprinkler
+let costUp3: number = 1000; // Base price for fertilizer
+let upgrade1: number = 0; // Counter to keep growth for upgrade
+let upgrade1Amt: number = 0; // Amount of harvesters
+let upgrade2: number = 0; // Counter to keep growth for upgrade
+let upgrade2Amt: number = 0; // Amount of sprinklers
+let upgrade3: number = 0; // Counter to keep growth for upgrade
+let upgrade3Amt: number = 0; // Amount of fertilizer
+let growthRate: number = 0; // Counter to keep track of fries per second
 
 // Potato button
 const potato = document.createElement("div");
@@ -120,7 +120,7 @@ document.body.appendChild(growthR);
 
 updateButtons();
 
-// Function for buying auto clickers
+// Function for buying harvesters
 function buyClick() {
   if (counter >= costUp1) {
     counter -= costUp1;
@@ -139,6 +139,7 @@ function buyClick() {
   }
 }
 
+// Function for buying sprinklers
 function buyClick2() {
   if (counter >= costUp2) {
     counter -= costUp2;
@@ -157,6 +158,7 @@ function buyClick2() {
   }
 }
 
+// Function for buying fertilizer
 function buyClick3() {
   if (counter >= costUp3) {
     counter -= costUp3;
@@ -175,14 +177,14 @@ function buyClick3() {
   }
 }
 
-// Disable button when not enough
+// Disable button when not enough fries to purchase upgrade
 function updateButtons() {
   up1.disabled = counter < costUp1;
   up2.disabled = counter < costUp2;
   up3.disabled = counter < costUp3;
 }
 
-// setInterval growth
+// setInterval growth commented out
 //setInterval(() => {
 //  counter++;
 //  counterElement.textContent = `Fries 🍟: ${counter}`;
@@ -193,19 +195,19 @@ let lastTime = performance.now();
 function gameLoop(currentTime: number) {
   const deltaSec = (currentTime - lastTime) / 1000; // seconds passed
   if (upgrade1 > 0) {
-    counter += upgrade1 * deltaSec; // fractional growth
-    counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`;
-    updateButtons();
+    counter += upgrade1 * deltaSec; // Fractional growth
+    counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`; // Display fries after added to counter
+    updateButtons(); // Call update button to check if player has enough to purchase again
   }
   if (upgrade2 > 0) {
-    counter += upgrade2 * deltaSec;
-    counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`;
-    updateButtons();
+    counter += upgrade2 * deltaSec; // Fractional growth
+    counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`; // Display fries after added to counter
+    updateButtons(); // Call update button to check if player has enough to purchase again
   }
   if (upgrade3 > 0) {
-    counter += upgrade3 * deltaSec;
-    counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`;
-    updateButtons();
+    counter += upgrade3 * deltaSec; // Fractional growth
+    counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`; // Display fries after added to counter
+    updateButtons(); // Call update button to check if player has enough to purchase again
   }
   lastTime = currentTime;
   requestAnimationFrame(gameLoop);
@@ -231,7 +233,7 @@ potato.addEventListener("click", () => {
   }
 });
 
-// When purchase auto clicker button is clicked
+// When harvester is purchased
 up1.addEventListener("click", () => {
   buyClick();
 
@@ -241,6 +243,7 @@ up1.addEventListener("click", () => {
     up1.style.transform = "scale(1)";
   }, 100);
 });
+// When sprinkler is purchased
 up2.addEventListener("click", () => {
   buyClick2();
 
@@ -250,6 +253,7 @@ up2.addEventListener("click", () => {
     up2.style.transform = "scale(1)";
   }, 100);
 });
+// When fertilizer is purchaed
 up3.addEventListener("click", () => {
   buyClick3();
 
