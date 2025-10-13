@@ -1,6 +1,6 @@
 import "./style.css";
 
-let counter: number = 1000; // Amount of potatos
+let counter: number = 0; // Amount of potatos
 let growthRate: number = 0; // Counter to keep track of fries per second
 
 // Potato button
@@ -37,6 +37,15 @@ growthR.style.marginTop = "-200px";
 
 document.body.appendChild(growthR);
 
+// Display descriptions
+const descriptionDisplay = document.createElement("p");
+descriptionDisplay.style.position = "absolute";
+descriptionDisplay.style.marginTop = "-125px";
+descriptionDisplay.style.fontSize = "18px";
+descriptionDisplay.style.fontFamily = "cursive";
+descriptionDisplay.textContent = "Hover over an upgrade to learn more.";
+document.body.appendChild(descriptionDisplay);
+
 interface Upgrade {
   name: string;
   cost: number;
@@ -45,22 +54,50 @@ interface Upgrade {
   currentCost: number;
   button: HTMLButtonElement;
   countDisplay: HTMLParagraphElement;
+  description: string;
 }
 
 const upgrades: Upgrade[] = [];
 
 // Define initial data
 const upgradeData = [
-  { name: "Harvester", cost: 10, rate: 0.1 },
-  { name: "Sprinkler", cost: 100, rate: 2.0 },
-  { name: "Fertilizer", cost: 1000, rate: 50 },
+  {
+    name: "Harvester",
+    cost: 10,
+    rate: 0.1,
+    description: "A rusty but reliable tool.",
+  },
+  {
+    name: "Sprinkler",
+    cost: 100,
+    rate: 2.0,
+    description: "Potatoes get thirsty, right?",
+  },
+  {
+    name: "Fertilizer",
+    cost: 1000,
+    rate: 50,
+    description: "Used to increase crop yield.",
+  },
+  {
+    name: "Genetic modification",
+    cost: 5000,
+    rate: 200,
+    description: "Larger and more potatoes.",
+  },
+  {
+    name: "Starch shrine",
+    cost: 10000,
+    rate: 1000,
+    description: "Is this really a good idea?",
+  },
 ];
 
 // Create each upgrade with its own button
 for (let i = 0; i < upgradeData.length; i++) {
   const data = upgradeData[i];
 
-  // Create the button
+  // Create the upgrade buttons
   const button = document.createElement("button");
   button.style.position = "absolute";
   button.style.marginTop = `${300 + i * 100}px`;
@@ -68,9 +105,10 @@ for (let i = 0; i < upgradeData.length; i++) {
   button.style.fontFamily = "cursive";
   button.style.cursor = "pointer";
 
+  // Create display for amount of each upgrade
   const upgAmt = document.createElement("p");
   upgAmt.style.position = "absolute";
-  upgAmt.style.marginTop = `${-500 + i * 100}px`;
+  upgAmt.style.marginTop = `${-700 + i * 100}px`;
   upgAmt.style.fontSize = "24px";
   upgAmt.style.fontFamily = "cursive";
 
@@ -80,9 +118,10 @@ for (let i = 0; i < upgradeData.length; i++) {
     cost: data.cost,
     rate: data.rate,
     count: 0,
-    currentCost: data.cost, // starts at base cost
-    button: button, // ✅ assign the dynamically created button
+    currentCost: data.cost,
+    button: button,
     countDisplay: upgAmt,
+    description: data.description,
   };
 
   upgrades.push(upgrade);
@@ -93,25 +132,35 @@ for (let i = 0; i < upgradeData.length; i++) {
   }🍟: +${upgrade.rate}🍟/sec`;
   button.disabled = counter < upgrade.currentCost;
 
-  upgAmt.textContent = `${upgrade.name}: ${upgrade.count}`;
+  upgAmt.textContent = `${upgrade.name}: ${upgrade.count}`; // Display upgrade and the amount
 
-  // Attach click handler
+  // When an upgrade is purchased, run buyUpgrade with index
   button.onclick = () => buyUpgrade(i);
 
-  // Add to DOM
-  document.body.appendChild(button);
-  document.body.appendChild(upgAmt);
+  // Display the item description if the user hovers over an upgrade
+  button.onmouseover = () => {
+    descriptionDisplay.textContent = data.description;
+  };
+
+  // When the users mouse isn't hovering over an upgrade
+  button.onmouseout = () => {
+    descriptionDisplay.textContent = "Hover over an upgrade to learn more.";
+  };
+
+  document.body.appendChild(button); // Display upgrade buttons
+  document.body.appendChild(upgAmt); // Display amount of upgrades
 }
 
-// Replace buyclick with
+// Buy upgrades function
 function buyUpgrade(index: number) {
   const item = upgrades[index];
-  if (counter >= item.currentCost) {
-    counter -= item.currentCost;
-    item.currentCost *= 1.15;
-    item.count++;
-    growthRate += item.rate;
-    updateUI();
+  if (counter >= item.currentCost) { // If the player can afford the upgrade
+    counter -= item.currentCost; // Subtract the cost of the item with the amount the player has
+    item.currentCost *= 1.15; // Increase the price of the item by 15%
+    item.count++; // Add 1 to the item count
+    growthRate += item.rate; // Add to the growth rate based off items value
+    updateUI(); // Call updateUI
+    // Play an animation when they purchase an upgrade
     item.button.style.transform = "scale(0.8)";
     setTimeout(() => {
       item.button.style.transform = "scale(1)";
@@ -119,18 +168,19 @@ function buyUpgrade(index: number) {
   }
 }
 
+// Updating the buttons function
 function updateUI() {
-  for (const item of upgrades) {
+  for (const item of upgrades) { // Get every item
     item.button.textContent = `Buy ${item.name}: -${
       item.currentCost.toFixed(1)
-    }🍟: +${item.rate}🍟/sec`;
-    item.button.disabled = counter < item.currentCost;
-    item.countDisplay.textContent = `${item.name}: ${item.count}`;
+    }🍟: +${item.rate}🍟/sec`; // Show upgrade name, cost, and rate of fries/sec
+    item.button.disabled = counter < item.currentCost; // If not able to purchase upgrade, disable the button
+    item.countDisplay.textContent = `${item.name}: ${item.count}`; // Update the amount of each upgrade
   }
 
-  growthR.textContent = `🍟/sec: ${growthRate.toFixed(1)}`;
+  growthR.textContent = `🍟/sec: ${growthRate.toFixed(1)}`; // Display amount of fries per second
 
-  counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`;
+  counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`; // Display amount of fries
 }
 
 // setInterval growth commented out
@@ -153,9 +203,8 @@ requestAnimationFrame(gameLoop);
 
 // When potato button clicked
 potato.addEventListener("click", () => {
-  // Update click count
-  counter++;
-  updateUI();
+  counter++; // Update click count
+  updateUI(); //  Call updateUI function
 
   // Play animation
   potato.style.transform = "scale(0.8)";
