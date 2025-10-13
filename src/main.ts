@@ -124,13 +124,13 @@ updateButtons();
 function buyClick() {
   if (counter >= costUp1) {
     counter -= costUp1;
-    costUp1++;
+    costUp1 *= 1.15;
     upgrade1 += 0.1;
     upgrade1Amt++;
     growthRate += 0.1;
-    up1.textContent = `Buy harvester: -${costUp1}🍟: +0.1🍟/sec`;
-    up2.textContent = `Buy sprinkler: -${costUp2}🍟: +2.0🍟/sec`;
-    up3.textContent = `Buy fertilizer: -${costUp3}🍟: +50.0🍟/sec`;
+    up1.textContent = `Buy harvester: -${costUp1.toFixed(1)}🍟: +0.1🍟/sec`;
+    up2.textContent = `Buy sprinkler: -${costUp2.toFixed(1)}🍟: +2.0🍟/sec`;
+    up3.textContent = `Buy fertilizer: -${costUp3.toFixed(1)}🍟: +50.0🍟/sec`;
     updateButtons();
     clickerAmt.textContent = `Harvesters: ${upgrade1Amt}`;
     growthR.textContent = `🍟/sec: ${growthRate.toFixed(1)}`;
@@ -142,13 +142,13 @@ function buyClick() {
 function buyClick2() {
   if (counter >= costUp2) {
     counter -= costUp2;
-    costUp2 += 10;
+    costUp2 *= 1.15;
     upgrade2 += 2;
     upgrade2Amt++;
     growthRate += 2;
-    up1.textContent = `Buy harvester: -${costUp1}🍟: +0.1🍟/sec`;
-    up2.textContent = `Buy sprinkler: -${costUp2}🍟: +2.0🍟/sec`;
-    up3.textContent = `Buy fertilizer: -${costUp3}🍟: +50.0🍟/sec`;
+    up1.textContent = `Buy harvester: -${costUp1.toFixed(1)}🍟: +0.1🍟/sec`;
+    up2.textContent = `Buy sprinkler: -${costUp2.toFixed(1)}🍟: +2.0🍟/sec`;
+    up3.textContent = `Buy fertilizer: -${costUp3.toFixed(1)}🍟: +50.0🍟/sec`;
     updateButtons();
     sprinklerAmt.textContent = `Sprinklers: ${upgrade2Amt}`;
     growthR.textContent = `🍟/sec: ${growthRate.toFixed(1)}`;
@@ -160,13 +160,13 @@ function buyClick2() {
 function buyClick3() {
   if (counter >= costUp3) {
     counter -= costUp3;
-    costUp3 += 100;
+    costUp3 *= 1.15;
     upgrade3 += 50;
     upgrade3Amt++;
     growthRate += 50;
-    up1.textContent = `Buy harvester: -${costUp1}🍟: +0.1🍟/sec`;
-    up2.textContent = `Buy sprinkler: -${costUp2}🍟: +2.0🍟/sec`;
-    up3.textContent = `Buy fertilizer: -${costUp3}🍟: +50.0🍟/sec`;
+    up1.textContent = `Buy harvester: -${costUp1.toFixed(1)}🍟: +0.1🍟/sec`;
+    up2.textContent = `Buy sprinkler: -${costUp2.toFixed(1)}🍟: +2.0🍟/sec`;
+    up3.textContent = `Buy fertilizer: -${costUp3.toFixed(1)}🍟: +50.0🍟/sec`;
     updateButtons();
     fertilizerAmt.textContent = `Fertilizer: ${upgrade3Amt}`;
     growthR.textContent = `🍟/sec: ${growthRate.toFixed(1)}`;
