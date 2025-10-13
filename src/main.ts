@@ -3,11 +3,14 @@ import "./style.css";
 let counter: number = 0; // Amount of potatos
 let costUp1: number = 10; // Base price for an auto clicker
 let costUp2: number = 100;
+let costUp3: number = 1000;
 let upgrade1: number = 0;
 let upgrade1Amt: number = 0;
 let upgrade2: number = 0;
 let upgrade2Amt: number = 0;
-//let upgrade3: number = 0;
+let upgrade3: number = 0;
+let upgrade3Amt: number = 0;
+let growthRate: number = 0;
 
 // Potato button
 const potato = document.createElement("div");
@@ -21,7 +24,7 @@ document.body.style.textAlign = "center";
 document.body.style.marginTop = "0px";
 document.body.appendChild(potato);
 
-// clicker button
+// Upgrade 1 button
 const up1 = document.createElement("button");
 up1.className = "clicker";
 up1.style.position = "absolute";
@@ -34,7 +37,7 @@ up1.style.marginTop = "275px";
 up1.style.fontFamily = "cursive";
 document.body.appendChild(up1);
 
-// Buy 2 clicker button
+// Upgrade 2 button
 const up2 = document.createElement("button");
 up2.className = "clicker2";
 up2.style.position = "absolute";
@@ -43,9 +46,22 @@ up2.style.fontSize = "24px";
 up2.textContent = `Buy sprinkler: -${costUp2}🍟: +2.0🍟/sec`;
 
 up2.style.textAlign = "center";
-up2.style.marginTop = "400px";
+up2.style.marginTop = "375px";
 up2.style.fontFamily = "cursive";
 document.body.appendChild(up2);
+
+// Upgrade 3 button
+const up3 = document.createElement("button");
+up3.className = "clicker3";
+up3.style.position = "absolute";
+up3.style.cursor = "pointer";
+up3.style.fontSize = "24px";
+up3.textContent = `Buy Fertilizer: -${costUp3}🍟: +50.0🍟/sec`;
+
+up3.style.textAlign = "center";
+up3.style.marginTop = "475px";
+up3.style.fontFamily = "cursive";
+document.body.appendChild(up3);
 
 // Display amount of fries
 const counterElement = document.createElement("p");
@@ -69,6 +85,7 @@ clickerAmt.style.marginTop = "-500px";
 
 document.body.appendChild(clickerAmt);
 
+// Display amount of sprinklers
 const sprinklerAmt = document.createElement("p");
 sprinklerAmt.id = "clicker-count";
 sprinklerAmt.textContent = `Sprinklers: ${upgrade2}`;
@@ -78,6 +95,29 @@ sprinklerAmt.style.fontFamily = "cursive";
 sprinklerAmt.style.marginTop = "-400px";
 
 document.body.appendChild(sprinklerAmt);
+
+// Display amount of fertilizer
+const fertilizerAmt = document.createElement("p");
+fertilizerAmt.id = "clicker-count";
+fertilizerAmt.textContent = `Fertilizer: ${upgrade3}`;
+fertilizerAmt.style.fontSize = "24px";
+fertilizerAmt.style.position = "absolute";
+fertilizerAmt.style.fontFamily = "cursive";
+fertilizerAmt.style.marginTop = "-300px";
+
+document.body.appendChild(fertilizerAmt);
+
+// Display growth rate
+const growthR = document.createElement("p");
+growthR.id = "clicker-count";
+growthR.textContent = `🍟/sec: ${growthRate.toFixed(1)}`;
+growthR.style.fontSize = "24px";
+growthR.style.position = "absolute";
+growthR.style.fontFamily = "cursive";
+growthR.style.marginTop = "-200px";
+
+document.body.appendChild(growthR);
+
 updateButtons();
 
 // Function for buying auto clickers
@@ -87,11 +127,13 @@ function buyClick() {
     costUp1++;
     upgrade1 += 0.1;
     upgrade1Amt++;
+    growthRate += 0.1;
     up1.textContent = `Buy harvester: -${costUp1}🍟: +0.1🍟/sec`;
     up2.textContent = `Buy sprinkler: -${costUp2}🍟: +2.0🍟/sec`;
+    up3.textContent = `Buy fertilizer: -${costUp3}🍟: +50.0🍟/sec`;
     updateButtons();
     clickerAmt.textContent = `Harvesters: ${upgrade1Amt}`;
-    sprinklerAmt.textContent = `Sprinklers: ${upgrade2Amt}`;
+    growthR.textContent = `🍟/sec: ${growthRate.toFixed(1)}`;
   } else if (counter < costUp1) {
     updateButtons();
   }
@@ -103,10 +145,31 @@ function buyClick2() {
     costUp2 += 10;
     upgrade2 += 2;
     upgrade2Amt++;
+    growthRate += 2;
     up1.textContent = `Buy harvester: -${costUp1}🍟: +0.1🍟/sec`;
     up2.textContent = `Buy sprinkler: -${costUp2}🍟: +2.0🍟/sec`;
+    up3.textContent = `Buy fertilizer: -${costUp3}🍟: +50.0🍟/sec`;
     updateButtons();
     sprinklerAmt.textContent = `Sprinklers: ${upgrade2Amt}`;
+    growthR.textContent = `🍟/sec: ${growthRate.toFixed(1)}`;
+  } else if (counter < costUp2) {
+    updateButtons();
+  }
+}
+
+function buyClick3() {
+  if (counter >= costUp3) {
+    counter -= costUp3;
+    costUp3 += 100;
+    upgrade3 += 50;
+    upgrade3Amt++;
+    growthRate += 50;
+    up1.textContent = `Buy harvester: -${costUp1}🍟: +0.1🍟/sec`;
+    up2.textContent = `Buy sprinkler: -${costUp2}🍟: +2.0🍟/sec`;
+    up3.textContent = `Buy fertilizer: -${costUp3}🍟: +50.0🍟/sec`;
+    updateButtons();
+    fertilizerAmt.textContent = `Fertilizer: ${upgrade3Amt}`;
+    growthR.textContent = `🍟/sec: ${growthRate.toFixed(1)}`;
   } else if (counter < costUp2) {
     updateButtons();
   }
@@ -116,6 +179,7 @@ function buyClick2() {
 function updateButtons() {
   up1.disabled = counter < costUp1;
   up2.disabled = counter < costUp2;
+  up3.disabled = counter < costUp3;
 }
 
 // setInterval growth
@@ -135,6 +199,11 @@ function gameLoop(currentTime: number) {
   }
   if (upgrade2 > 0) {
     counter += upgrade2 * deltaSec;
+    counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`;
+    updateButtons();
+  }
+  if (upgrade3 > 0) {
+    counter += upgrade3 * deltaSec;
     counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`;
     updateButtons();
   }
@@ -179,6 +248,15 @@ up2.addEventListener("click", () => {
   up2.style.transform = "scale(0.8)";
   setTimeout(() => {
     up2.style.transform = "scale(1)";
+  }, 100);
+});
+up3.addEventListener("click", () => {
+  buyClick3();
+
+  // Animation
+  up3.style.transform = "scale(0.8)";
+  setTimeout(() => {
+    up3.style.transform = "scale(1)";
   }, 100);
 });
 
