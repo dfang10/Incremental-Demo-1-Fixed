@@ -159,12 +159,12 @@ for (let i = 0; i < upgradeData.length; i++) {
 // Buy upgrades function
 function buyUpgrade(index: number) {
   const item = upgrades[index];
-  if (potatoAmt >= item.currentCost) { 
-    potatoAmt -= item.currentCost; 
-    item.currentCost *= 1.15; 
-    item.count++; 
-    growthRate += item.rate; 
-    updateUI(); 
+  if (potatoAmt >= item.currentCost) {
+    potatoAmt -= item.currentCost;
+    item.currentCost *= 1.15;
+    item.count++;
+    growthRate += item.rate;
+    updateUI();
     item.button.style.transform = "scale(0.8)";
     setTimeout(() => {
       item.button.style.transform = "scale(1)";
@@ -174,26 +174,26 @@ function buyUpgrade(index: number) {
 
 // Updating the buttons function
 function updateUI() {
-  for (const item of upgrades) { 
+  for (const item of upgrades) {
     item.button.textContent = `Buy ${item.name}: -${
       item.currentCost.toFixed(1)
-    }🍟: +${item.rate}🍟/sec`; 
-    item.button.disabled = potatoAmt < item.currentCost; 
-    item.countDisplay.textContent = `${item.name}: ${item.count}`; 
+    }🍟: +${item.rate}🍟/sec`;
+    item.button.disabled = potatoAmt < item.currentCost;
+    item.countDisplay.textContent = `${item.name}: ${item.count}`;
   }
 
-  growthRateDisplay.textContent = `🍟/sec: ${growthRate.toFixed(1)}`; 
+  growthRateDisplay.textContent = `🍟/sec: ${growthRate.toFixed(1)}`;
 
-  counterElement.textContent = `Fries 🍟: ${Math.floor(potatoAmt)}`; 
+  counterElement.textContent = `Fries 🍟: ${Math.floor(potatoAmt)}`;
 }
 
 // Continuous growth (used brace) requestAnimationFrame growth
 let lastTime = performance.now();
 function gameLoop(currentTime: number) {
-  const deltaSec = (currentTime - lastTime) / 1000; 
+  const deltaSec = (currentTime - lastTime) / 1000;
   potatoAmt += growthRate * deltaSec; // Fractional growth
-  counterElement.textContent = `Fries 🍟: ${Math.floor(potatoAmt)}`; 
-  updateUI(); 
+  counterElement.textContent = `Fries 🍟: ${Math.floor(potatoAmt)}`;
+  updateUI();
   lastTime = currentTime;
   requestAnimationFrame(gameLoop);
 }
@@ -201,8 +201,8 @@ requestAnimationFrame(gameLoop);
 
 // When potato button clicked
 potato.addEventListener("click", () => {
-  potatoAmt++; 
-  updateUI(); 
+  potatoAmt++;
+  updateUI();
 
   // Play animation
   potato.style.transform = "scale(0.8)";
@@ -226,7 +226,7 @@ function createSparkle() {
   sparkle.textContent = "✨";
   sparkle.style.position = "absolute";
   sparkle.style.fontSize = "25px";
-  sparkle.style.pointerEvents = "none"; 
+  sparkle.style.pointerEvents = "none";
   sparkle.style.textAlign = "center";
 
   // Random direction + distance
