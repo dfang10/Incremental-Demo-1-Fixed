@@ -26,6 +26,11 @@ counterElement.style.marginTop = "200px";
 
 document.body.appendChild(counterElement);
 
+const upgradeAmtPosition = -700;
+const upgradeBtnPosition = 300;
+const textSpacing = 100;
+
+
 // Display growth rate
 const growthRateDisplay = document.createElement("p");
 growthRateDisplay.id = "clicker-count";
@@ -100,7 +105,7 @@ for (let i = 0; i < upgradeData.length; i++) {
   // Create the upgrade buttons
   const button = document.createElement("button");
   button.style.position = "absolute";
-  button.style.marginTop = `${300 + i * 100}px`;
+  button.style.marginTop = `${upgradeBtnPosition + i * textSpacing}px`;
   button.style.fontSize = "24px";
   button.style.fontFamily = "cursive";
   button.style.cursor = "pointer";
@@ -108,7 +113,7 @@ for (let i = 0; i < upgradeData.length; i++) {
   // Create display for amount of each upgrade
   const upgAmt = document.createElement("p");
   upgAmt.style.position = "absolute";
-  upgAmt.style.marginTop = `${-700 + i * 100}px`;
+  upgAmt.style.marginTop = `${upgradeAmtPosition + i * textSpacing}px`;
   upgAmt.style.fontSize = "24px";
   upgAmt.style.fontFamily = "cursive";
 
