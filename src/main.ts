@@ -30,7 +30,6 @@ const upgradeAmtPosition = -700;
 const upgradeBtnPosition = 300;
 const textSpacing = 100;
 
-
 // Display growth rate
 const growthRateDisplay = document.createElement("p");
 growthRateDisplay.id = "clicker-count";
