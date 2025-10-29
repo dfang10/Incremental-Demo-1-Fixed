@@ -1,6 +1,6 @@
 import "./style.css";
 
-let potatoAmt: number = 1000; // Amount of potatos
+let potatoAmt: number = 0; // Amount of potatos
 let growthRate: number = 0; // Counter to keep track of fries per second
 
 // Potato button
