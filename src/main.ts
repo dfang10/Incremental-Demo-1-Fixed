@@ -1,6 +1,6 @@
 import "./style.css";
 
-let counter: number = 0; // Amount of potatos
+let potatoAmt: number = 0; // Amount of potatos
 let growthRate: number = 0; // Counter to keep track of fries per second
 
 // Potato button
@@ -18,7 +18,7 @@ document.body.appendChild(potato);
 // Display amount of fries
 const counterElement = document.createElement("p");
 counterElement.id = "click-counter";
-counterElement.textContent = `Fries 🍟: ${counter}`;
+counterElement.textContent = `Fries 🍟: ${potatoAmt}`;
 counterElement.style.fontSize = "24px";
 counterElement.style.position = "absolute";
 counterElement.style.fontFamily = "cursive";
@@ -27,15 +27,15 @@ counterElement.style.marginTop = "200px";
 document.body.appendChild(counterElement);
 
 // Display growth rate
-const growthR = document.createElement("p");
-growthR.id = "clicker-count";
-growthR.textContent = `🍟/sec: ${growthRate.toFixed(1)}`;
-growthR.style.fontSize = "24px";
-growthR.style.position = "absolute";
-growthR.style.fontFamily = "cursive";
-growthR.style.marginTop = "-200px";
+const growthRateDisplay = document.createElement("p");
+growthRateDisplay.id = "clicker-count";
+growthRateDisplay.textContent = `🍟/sec: ${growthRate.toFixed(1)}`;
+growthRateDisplay.style.fontSize = "24px";
+growthRateDisplay.style.position = "absolute";
+growthRateDisplay.style.fontFamily = "cursive";
+growthRateDisplay.style.marginTop = "-200px";
 
-document.body.appendChild(growthR);
+document.body.appendChild(growthRateDisplay);
 
 // Display descriptions
 const descriptionDisplay = document.createElement("p");
@@ -130,7 +130,7 @@ for (let i = 0; i < upgradeData.length; i++) {
   button.textContent = `Buy ${upgrade.name}: -${
     upgrade.currentCost.toFixed(1)
   }🍟: +${upgrade.rate}🍟/sec`;
-  button.disabled = counter < upgrade.currentCost;
+  button.disabled = potatoAmt < upgrade.currentCost;
 
   upgAmt.textContent = `${upgrade.name}: ${upgrade.count}`; // Display upgrade and the amount
 
@@ -154,8 +154,8 @@ for (let i = 0; i < upgradeData.length; i++) {
 // Buy upgrades function
 function buyUpgrade(index: number) {
   const item = upgrades[index];
-  if (counter >= item.currentCost) { // If the player can afford the upgrade
-    counter -= item.currentCost; // Subtract the cost of the item with the amount the player has
+  if (potatoAmt >= item.currentCost) { // If the player can afford the upgrade
+    potatoAmt -= item.currentCost; // Subtract the cost of the item with the amount the player has
     item.currentCost *= 1.15; // Increase the price of the item by 15%
     item.count++; // Add 1 to the item count
     growthRate += item.rate; // Add to the growth rate based off items value
@@ -174,27 +174,21 @@ function updateUI() {
     item.button.textContent = `Buy ${item.name}: -${
       item.currentCost.toFixed(1)
     }🍟: +${item.rate}🍟/sec`; // Show upgrade name, cost, and rate of fries/sec
-    item.button.disabled = counter < item.currentCost; // If not able to purchase upgrade, disable the button
+    item.button.disabled = potatoAmt < item.currentCost; // If not able to purchase upgrade, disable the button
     item.countDisplay.textContent = `${item.name}: ${item.count}`; // Update the amount of each upgrade
   }
 
-  growthR.textContent = `🍟/sec: ${growthRate.toFixed(1)}`; // Display amount of fries per second
+  growthRateDisplay.textContent = `🍟/sec: ${growthRate.toFixed(1)}`; // Display amount of fries per second
 
-  counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`; // Display amount of fries
+  counterElement.textContent = `Fries 🍟: ${Math.floor(potatoAmt)}`; // Display amount of fries
 }
-
-// setInterval growth commented out
-//setInterval(() => {
-//  counter++;
-//  counterElement.textContent = `Fries 🍟: ${counter}`;
-//}, 1000);
 
 // Continuous growth (used brace) requestAnimationFrame growth
 let lastTime = performance.now();
 function gameLoop(currentTime: number) {
   const deltaSec = (currentTime - lastTime) / 1000; // seconds passed
-  counter += growthRate * deltaSec; // Fractional growth
-  counterElement.textContent = `Fries 🍟: ${Math.floor(counter)}`; // Display fries after added to counter
+  potatoAmt += growthRate * deltaSec; // Fractional growth
+  counterElement.textContent = `Fries 🍟: ${Math.floor(potatoAmt)}`; // Display fries after added to counter
   updateUI(); // Call update button to check if player has enough to purchase again
   lastTime = currentTime;
   requestAnimationFrame(gameLoop);
@@ -203,7 +197,7 @@ requestAnimationFrame(gameLoop);
 
 // When potato button clicked
 potato.addEventListener("click", () => {
-  counter++; // Update click count
+  potatoAmt++; // Update click count
   updateUI(); //  Call updateUI function
 
   // Play animation
