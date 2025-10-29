@@ -1,7 +1,7 @@
 import "./style.css";
 
-let potatoAmt: number = 0; // Amount of potatos
-let growthRate: number = 0; // Counter to keep track of fries per second
+let potatoAmt: number = 0;
+let growthRate: number = 0;
 
 // Potato button
 const potato = document.createElement("div");
@@ -50,6 +50,7 @@ descriptionDisplay.style.fontFamily = "cursive";
 descriptionDisplay.textContent = "Hover over an upgrade to learn more.";
 document.body.appendChild(descriptionDisplay);
 
+// Upgrade interface, holds all data
 interface Upgrade {
   name: string;
   cost: number;
@@ -136,7 +137,7 @@ for (let i = 0; i < upgradeData.length; i++) {
   }🍟: +${upgrade.rate}🍟/sec`;
   button.disabled = potatoAmt < upgrade.currentCost;
 
-  upgAmt.textContent = `${upgrade.name}: ${upgrade.count}`; // Display upgrade and the amount
+  upgAmt.textContent = `${upgrade.name}: ${upgrade.count}`;
 
   // When an upgrade is purchased, run buyUpgrade with index
   button.onclick = () => buyUpgrade(i);
@@ -158,13 +159,12 @@ for (let i = 0; i < upgradeData.length; i++) {
 // Buy upgrades function
 function buyUpgrade(index: number) {
   const item = upgrades[index];
-  if (potatoAmt >= item.currentCost) { // If the player can afford the upgrade
-    potatoAmt -= item.currentCost; // Subtract the cost of the item with the amount the player has
-    item.currentCost *= 1.15; // Increase the price of the item by 15%
-    item.count++; // Add 1 to the item count
-    growthRate += item.rate; // Add to the growth rate based off items value
-    updateUI(); // Call updateUI
-    // Play an animation when they purchase an upgrade
+  if (potatoAmt >= item.currentCost) { 
+    potatoAmt -= item.currentCost; 
+    item.currentCost *= 1.15; 
+    item.count++; 
+    growthRate += item.rate; 
+    updateUI(); 
     item.button.style.transform = "scale(0.8)";
     setTimeout(() => {
       item.button.style.transform = "scale(1)";
@@ -174,26 +174,26 @@ function buyUpgrade(index: number) {
 
 // Updating the buttons function
 function updateUI() {
-  for (const item of upgrades) { // Get every item
+  for (const item of upgrades) { 
     item.button.textContent = `Buy ${item.name}: -${
       item.currentCost.toFixed(1)
-    }🍟: +${item.rate}🍟/sec`; // Show upgrade name, cost, and rate of fries/sec
-    item.button.disabled = potatoAmt < item.currentCost; // If not able to purchase upgrade, disable the button
-    item.countDisplay.textContent = `${item.name}: ${item.count}`; // Update the amount of each upgrade
+    }🍟: +${item.rate}🍟/sec`; 
+    item.button.disabled = potatoAmt < item.currentCost; 
+    item.countDisplay.textContent = `${item.name}: ${item.count}`; 
   }
 
-  growthRateDisplay.textContent = `🍟/sec: ${growthRate.toFixed(1)}`; // Display amount of fries per second
+  growthRateDisplay.textContent = `🍟/sec: ${growthRate.toFixed(1)}`; 
 
-  counterElement.textContent = `Fries 🍟: ${Math.floor(potatoAmt)}`; // Display amount of fries
+  counterElement.textContent = `Fries 🍟: ${Math.floor(potatoAmt)}`; 
 }
 
 // Continuous growth (used brace) requestAnimationFrame growth
 let lastTime = performance.now();
 function gameLoop(currentTime: number) {
-  const deltaSec = (currentTime - lastTime) / 1000; // seconds passed
+  const deltaSec = (currentTime - lastTime) / 1000; 
   potatoAmt += growthRate * deltaSec; // Fractional growth
-  counterElement.textContent = `Fries 🍟: ${Math.floor(potatoAmt)}`; // Display fries after added to counter
-  updateUI(); // Call update button to check if player has enough to purchase again
+  counterElement.textContent = `Fries 🍟: ${Math.floor(potatoAmt)}`; 
+  updateUI(); 
   lastTime = currentTime;
   requestAnimationFrame(gameLoop);
 }
@@ -201,8 +201,8 @@ requestAnimationFrame(gameLoop);
 
 // When potato button clicked
 potato.addEventListener("click", () => {
-  potatoAmt++; // Update click count
-  updateUI(); //  Call updateUI function
+  potatoAmt++; 
+  updateUI(); 
 
   // Play animation
   potato.style.transform = "scale(0.8)";
@@ -210,7 +210,6 @@ potato.addEventListener("click", () => {
     potato.style.transform = "scale(1)";
   }, 100);
 
-  // Run the sparkle function 10 times
   for (let i = 0; i < 10; i++) {
     createSparkle();
   }
@@ -227,7 +226,7 @@ function createSparkle() {
   sparkle.textContent = "✨";
   sparkle.style.position = "absolute";
   sparkle.style.fontSize = "25px";
-  sparkle.style.pointerEvents = "none"; // Don't interfere with clicks
+  sparkle.style.pointerEvents = "none"; 
   sparkle.style.textAlign = "center";
 
   // Random direction + distance
@@ -238,7 +237,6 @@ function createSparkle() {
 
   potato.getBoundingClientRect();
 
-  // Animate outward
   document.body.appendChild(sparkle);
 
   // Use setTimeout to trigger animation
