@@ -3,6 +3,9 @@ import "./style.css";
 let potatoAmt: number = 0;
 let growthRate: number = 0;
 
+const clickSound = new Audio("src/audio/click.mp4");
+clickSound.volume = 1;
+
 // Potato button
 const potato = document.createElement("div");
 potato.className = "potato";
@@ -67,31 +70,31 @@ const upgrades: Upgrade[] = [];
 // Define initial data
 const upgradeData = [
   {
-    name: "Harvester",
+    name: "Harvester ⚙️",
     cost: 10,
     rate: 0.1,
     description: "A rusty but reliable tool.",
   },
   {
-    name: "Sprinkler",
+    name: "Sprinkler 💧",
     cost: 100,
     rate: 2.0,
     description: "Potatoes get thirsty, right?",
   },
   {
-    name: "Fertilizer",
+    name: "Fertilizer 💩",
     cost: 1000,
     rate: 50,
     description: "Used to increase crop yield.",
   },
   {
-    name: "Genetic modification",
+    name: "Genetic modification 🧬",
     cost: 5000,
     rate: 200,
     description: "Larger and more potatoes.",
   },
   {
-    name: "Starch shrine",
+    name: "Starch shrine 🛕",
     cost: 10000,
     rate: 1000,
     description: "Is this really a good idea?",
@@ -201,6 +204,8 @@ requestAnimationFrame(gameLoop);
 
 // When potato button clicked
 potato.addEventListener("click", () => {
+  clickSound.currentTime = 0; // rewind
+  clickSound.play().catch(err => console.error("Audio play failed:", err));
   potatoAmt++;
   updateUI();
 
