@@ -205,7 +205,7 @@ requestAnimationFrame(gameLoop);
 // When potato button clicked
 potato.addEventListener("click", () => {
   clickSound.currentTime = 0; // rewind
-  clickSound.play().catch(err => console.error("Audio play failed:", err));
+  clickSound.play().catch((err) => console.error("Audio play failed:", err));
   potatoAmt++;
   updateUI();
 
