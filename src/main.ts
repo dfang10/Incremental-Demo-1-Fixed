@@ -6,6 +6,7 @@ let growthRate: number = 0;
 const purchaseSound = new Audio("src/audio/purchase.mp3");
 const clickSound = new Audio("src/audio/click.mp4");
 clickSound.volume = 1;
+purchaseSound.volume = 1;
 
 // Potato button
 const potato = document.createElement("div");
@@ -151,8 +152,8 @@ for (let i = 0; i < upgradeData.length; i++) {
     descriptionDisplay.textContent = "Hover over an upgrade to learn more.";
   };
 
-  document.body.appendChild(button); 
-  document.body.appendChild(upgAmt); 
+  document.body.appendChild(button);
+  document.body.appendChild(upgAmt);
 }
 
 // Buy upgrades function
@@ -202,7 +203,7 @@ requestAnimationFrame(gameLoop);
 
 // When potato button clicked
 potato.addEventListener("click", () => {
-  clickSound.currentTime = 0; 
+  clickSound.currentTime = 0;
   clickSound.play();
   potatoAmt++;
   updateUI();
