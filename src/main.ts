@@ -3,6 +3,7 @@ import "./style.css";
 let potatoAmt: number = 0;
 let growthRate: number = 0;
 
+const purchaseSound = new Audio("src/audio/purchase.mp3");
 const clickSound = new Audio("src/audio/click.mp4");
 clickSound.volume = 1;
 
@@ -101,7 +102,6 @@ const upgradeData = [
   },
 ];
 
-// Create each upgrade with its own button
 for (let i = 0; i < upgradeData.length; i++) {
   const data = upgradeData[i];
 
@@ -134,7 +134,6 @@ for (let i = 0; i < upgradeData.length; i++) {
 
   upgrades.push(upgrade);
 
-  // Set initial text and disabled state
   button.textContent = `Buy ${upgrade.name}: -${
     upgrade.currentCost.toFixed(1)
   }🍟: +${upgrade.rate}🍟/sec`;
@@ -142,27 +141,26 @@ for (let i = 0; i < upgradeData.length; i++) {
 
   upgAmt.textContent = `${upgrade.name}: ${upgrade.count}`;
 
-  // When an upgrade is purchased, run buyUpgrade with index
   button.onclick = () => buyUpgrade(i);
 
-  // Display the item description if the user hovers over an upgrade
   button.onmouseover = () => {
     descriptionDisplay.textContent = data.description;
   };
 
-  // When the users mouse isn't hovering over an upgrade
   button.onmouseout = () => {
     descriptionDisplay.textContent = "Hover over an upgrade to learn more.";
   };
 
-  document.body.appendChild(button); // Display upgrade buttons
-  document.body.appendChild(upgAmt); // Display amount of upgrades
+  document.body.appendChild(button); 
+  document.body.appendChild(upgAmt); 
 }
 
 // Buy upgrades function
 function buyUpgrade(index: number) {
   const item = upgrades[index];
   if (potatoAmt >= item.currentCost) {
+    purchaseSound.currentTime = 0;
+    purchaseSound.play();
     potatoAmt -= item.currentCost;
     item.currentCost *= 1.15;
     item.count++;
@@ -194,7 +192,7 @@ function updateUI() {
 let lastTime = performance.now();
 function gameLoop(currentTime: number) {
   const deltaSec = (currentTime - lastTime) / 1000;
-  potatoAmt += growthRate * deltaSec; // Fractional growth
+  potatoAmt += growthRate * deltaSec;
   counterElement.textContent = `Fries 🍟: ${Math.floor(potatoAmt)}`;
   updateUI();
   lastTime = currentTime;
@@ -204,8 +202,8 @@ requestAnimationFrame(gameLoop);
 
 // When potato button clicked
 potato.addEventListener("click", () => {
-  clickSound.currentTime = 0; // rewind
-  clickSound.play().catch((err) => console.error("Audio play failed:", err));
+  clickSound.currentTime = 0; 
+  clickSound.play();
   potatoAmt++;
   updateUI();
 
@@ -244,7 +242,6 @@ function createSparkle() {
 
   document.body.appendChild(sparkle);
 
-  // Use setTimeout to trigger animation
   requestAnimationFrame(() => {
     sparkle.style.transition = "all 0.6s ease-out";
     sparkle.style.transform = `translate(${x}px, ${y}px) rotate(200deg)`;
